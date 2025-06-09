@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundane Moments - Sonam Yoesel Dorji</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        /* Custom Neon Colors */
+        .neon-pink { background-color: #FF007F; color: #fff; }
+        .neon-cyan { color: #00FFFF; }
+        .neon-green { border-color: #39FF14; }
+        .neon-shadow { box-shadow: 0 0 10px #FF007F, 0 0 20px #00FFFF; }
+        .hover\:neon-pink:hover { background-color: #FF007F; }
+        .hover\:neon-cyan:hover { color: #00FFFF; }
+        /* Transparent Background for Sections */
+        .transparent-bg { background: transparent; }
+        /* Space Background Canvas */
+        #space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -100;
+            opacity: 1;
+            background: #000000;
+            display: block;
+        }
+        /* Ensure showcase section is above canvas */
+        #showcase {
+            position: relative;
+            z-index: 2;
+            min-height: 50vh;
+        }
+        /* Image Styles */
+        .showcase-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 2px solid #39FF14;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .showcase-img:hover, .showcase-img:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #FF007F, 0 0 25px #00FFFF;
+        }
+        /* Back Button Styles */
+        .back-btn {
+            background-color: #FF007F;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .back-btn:hover, .back-btn:focus {
+            background-color: #00FFFF;
+            box-shadow: 0 0 15px #00FFFF;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="transparent-bg text-white font-sans antialiased">
+    <!-- Space Background Canvas -->
+    <canvas id="space-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 p-4 sticky top-0 z-50 neon-shadow">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight neon-cyan">SYD</h1>
+            <ul class="flex space-x-6 text-sm uppercase tracking-wide">
+                <li><a href="index.html#home" class="hover:neon-cyan transition duration-300">Home</a></li>
+                <li><a href="index.html#about" class="hover:neon-cyan transition duration-300">About</a></li>
+                <li><a href="index.html#projects" class="hover:neon-cyan transition duration-300">Projects</a></li>
+                <li><a href="index.html#skills" class="hover:neon-cyan transition duration-300">Skills</a></li>
+                <li><a href="index.html#contact" class="hover:neon-cyan transition duration-300">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Showcase Section -->
+    <section id="showcase" class="py-20 transparent-bg">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12 neon-cyan">Mundane Moments Showcase</h2>
+            <a href="index.html#projects" class="back-btn block mx-auto mb-8 text-center w-fit">Back to Projects</a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <img src="image2.jpg" alt="Mundane Moments Image 2" class="showcase-img">
+                <img src="image3.jpg" alt="Mundane Moments Image 3" class="showcase-img">
+                <img src="image4.jpg" alt="Mundane Moments Image 4" class="showcase-img">
+                <img src="image5.jpg" alt="Mundane Moments Image 5" class="showcase-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-6 text-center">
+        <p class="text-gray-300">© 2025 Sonam Yoesel Dorji. Built with passion.</p>
+    </footer>
+
+    <script>
+        // Ensure DOM is loaded before running scripts
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize GSAP ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Showcase Image Animations
+            gsap.from(".showcase-img", {
+                scrollTrigger: {
+                    trigger: ".showcase-img",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.8,
+                ease: "power3.out",
+                stagger: 0.2
+            });
+
+            // Space Background Animation
+            const canvas = document.getElementById('space-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            resizeCanvas();
+
+            const stars = [];
+            const starCount = 100; // Optimized for performance
+            const colors = ['#FFFFFF', '#FF007F', '#00FFFF', '#39FF14'];
+
+            class Star {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = Math.random() * 0.3 - 0.15; // Slower for performance
+                    this.speedY = Math.random() * 0.3 - 0.15;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            function initStars() {
+                for (let i = 0; i < starCount; i++) {
+                    stars.push(new Star());
+                }
+            }
+
+            function animateStars() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+                requestAnimationFrame(animateStars);
+            }
+
+            // Initialize and start animation
+            initStars();
+            animateStars();
+
+            // Resize canvas on window resize
+            window.addEventListener('resize', resizeCanvas);
+        });
+    </script>
+</body>
+</html>
